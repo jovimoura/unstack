@@ -3,12 +3,14 @@
 import {
   AlertCircleIcon,
   PaperclipIcon,
+  Sparkles,
   XIcon,
 } from "lucide-react";
 
 import { useFileUpload } from "@/hooks/use-file-upload";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function FileUploadInput() {
   const maxSize = 10 * 1024 * 1024; // 10MB default
@@ -29,6 +31,35 @@ export function FileUploadInput() {
   });
 
   const file = files[0];
+
+  const queryClient = useQueryClient();
+  const { mutate, isPending: isLoading } = useMutation({
+    mutationFn: async () => {
+      const formData = new FormData();
+      if ('file' in file && file.file instanceof File) {
+        formData.append("file", file.file);
+      } else {
+        throw new Error("Invalid file type");
+      }
+      formData.append("file", file.file);
+      const res = await fetch("http://localhost:8000/generate-quiz/", {
+        method: "POST",
+        body: formData,
+      });
+    
+      if (!res.ok) throw new Error("Failed to generate quiz");
+      
+      const data = await res.json();
+      console.log('JSON QUIZ', data);
+      return data.questions;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pdf"] });
+    },
+    onError: (error) => {
+      console.error("Send pdf error", error);
+    },
+  });
 
   return (
     <div className="flex flex-col gap-2 p-5 bg-white rounded-3xl w-full max-w-[700px] h-[400px]">
@@ -106,6 +137,9 @@ export function FileUploadInput() {
             >
               <XIcon className="size-4" aria-hidden="true" />
             </Button>
+          </div>
+          <div className="w-full flex items-center justify-end">
+            <Button onClick={() => mutate()} disabled={isLoading} className="cursor-pointer">Generate Quiz <Sparkles /></Button>
           </div>
         </div>
       )}
