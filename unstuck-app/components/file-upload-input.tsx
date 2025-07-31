@@ -107,11 +107,11 @@ export function FileUploadInput() {
             height={74}
             className="mb-8"
           />
-          <p className="mb-1.5 text-xl text-muted-foreground">
+          <p className="mb-1.5 text-base md:text-xl text-muted-foreground">
             <span className="text-primary font-semibold">Click to upload</span>{" "}
             or drag and drop files
           </p>
-          <p className="text-muted-foreground">
+          <p className="text-muted-foreground text-sm md:text-base">
             Drop Course Materials and start generating - for{" "}
             <span className="font-semibold">FREE</span>
           </p>
