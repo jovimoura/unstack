@@ -33,7 +33,7 @@ Each directory contains its own detailed documentation:
 ## 👨‍💻 Author
 
 Developed by **John Moura**  
-[LinkedIn](https://www.linkedin.com/in/johnmoura) • [GitHub](https://github.com/jovimoura)
+[LinkedIn](https://www.linkedin.com/in/jovimoura10) • [GitHub](https://github.com/jovimoura)
 
 ---
 
