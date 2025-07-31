@@ -46,11 +46,11 @@ export default function Results() {
   const incorrectPercentage = 100 - correctPercentage;
 
   return (
-    <div className="min-h-svh flex flex-col w-full items-start md:p-8 justify-start gap-y-6">
+    <div className="min-h-svh flex flex-col w-full items-start p-4 md:p-8 justify-start gap-y-6">
       <div className="w-full flex items-center justify-between">
-        <div className="flex items-center justify-start text-[#6E6B7B] gap-x-2">
+        <div className="flex items-center justify-start text-[#6E6B7B] gap-x-1 md:gap-x-2">
           <Button onClick={handleBack} variant="ghost" className="cursor-pointer" size="icon">
-            <ChevronLeft className="size-7" />
+            <ChevronLeft className="size-5 md:size-7" />
           </Button>
           <div className="flex items-center gap-x-2">
             <Image
@@ -61,12 +61,12 @@ export default function Results() {
               className="size-6"
             />
 
-            <span className="font-semibold text-2xl">Lorem Ipsum</span>
+            <span className="font-semibold text-lg md:text-2xl">Lorem Ipsum</span>
           </div>
         </div>
 
         <Button
-          className="bg-[#15112B] rounded-xl text-white cursor-pointer h-11 hover:bg-[#15112B]/90"
+          className="bg-[#15112B] rounded-xl text-white cursor-pointer md:h-11 hover:bg-[#15112B]/90"
           onClick={() => {}}
           size="default"
         >
@@ -77,13 +77,13 @@ export default function Results() {
 
       <div className="flex flex-col self-center space-y-6 w-full items-center max-w-[700px]">
         <div className="w-full p-5 border bg-white border-input flex flex-col gap-y-6 items-center justify-start rounded-xl">
-          <Image src="/correct-icon.svg" width={70} height={74} alt="check" />
+          <Image src="/correct-icon.svg" width={70} height={74} alt="check" className="size-10 md:size-[70px]" />
 
-          <span className="font-medium text-2xl max-w-[453px] text-center">
+          <span className="font-medium text-lg md:text-2xl max-w-[453px] text-center">
             Great Work Martinelli, you did very good on your quiz.
           </span>
 
-          <span className="font-semibold text-[56px]">{`${correctCount}/${quiz.questions.length}`}</span>
+          <span className="font-semibold text-5xl md:text-[56px]">{`${correctCount}/${quiz.questions.length}`}</span>
 
           <div className="max-w-[450px] w-full flex items-center gap-1">
             <div
@@ -99,15 +99,15 @@ export default function Results() {
           <div className="flex items-center justify-center gap-4">
             <div className="flex items-center gap-1">
               <div className="size-4 rounded-full bg-[#46CD94]" />
-              <span className="text-muted-foreground font-medium">
+              <span className="text-sm md:text-base text-muted-foreground font-medium">
                 Answered Correctly
               </span>
             </div>
 
             <div className="flex items-center gap-1">
               <div className="size-4 rounded-full bg-[#FF6258]" />
-              <span className="text-muted-foreground font-medium">
-                AMissed ansers
+              <span className="text-sm md:text-base text-muted-foreground font-medium">
+                Missed ansers
               </span>
             </div>
           </div>
@@ -123,7 +123,7 @@ export default function Results() {
         </div>
 
         <div className="w-full flex items-center justify-start">
-          <span className="text-xl font-medium">Result Summary</span>
+          <span className="md:text-xl font-medium">Result Summary</span>
         </div>
 
         {quiz.questions.map((q, i) => {
@@ -143,7 +143,7 @@ export default function Results() {
                   <span className="text-sm font-medium">Question {i + 1}</span>
 
                   <div className="border-input bg-[#98989814] p-5 rounded-xl w-full">
-                    <span className="w-full font-medium bg-transparent outline-none">
+                    <span className="w-full text-sm md:text-base font-medium bg-transparent outline-none">
                       {q.question}
                     </span>
                   </div>
@@ -158,7 +158,7 @@ export default function Results() {
                       >
                         <div
                           className={cn(
-                            "rounded-xl p-4 w-full flex items-center justify-between relative transition-colors bg-[#F8F8F9]",
+                            "rounded-xl text-sm md:text-base p-4 w-full flex items-center justify-between relative transition-colors bg-[#F8F8F9]",
                             answers[i] === j && j === q.answer_index
                               ? "bg-[#ECFDF1] border border-[#ABEFC6] text-[#28AD75]"
                               : answers[i] === j && j !== q.answer_index
@@ -191,11 +191,11 @@ export default function Results() {
               ) : (
                 <>
                   <div className="w-full flex items-center justify-between">
-                    <span className="font-medium">Question {i + 1}</span>
+                    <span className="font-medium text-sm md:text-base">Question {i + 1}</span>
 
                     <div
                       className={cn(
-                        "border rounded-xl flex items-center p-2 gap-2",
+                        "border rounded-xl flex items-center p-2 gap-2 text-sm md:text-base",
                         isCorrect
                           ? "bg-[#ECFDF1] border border-[#ABEFC6] text-[#28AD75]"
                           : "bg-[#FF62581F] border border-[#FF6258] text-[#FF6258]"
@@ -214,7 +214,7 @@ export default function Results() {
 
                   <Separator />
 
-                  <span>{q.question}</span>
+                  <span className="text-sm md:text-base">{q.question}</span>
                 </>
               )}
             </div>

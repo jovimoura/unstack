@@ -56,16 +56,16 @@ export function Quiz({ quizId }: { quizId: string }) {
       return null;
     } else if (selected === activeQuestion.answer_index) {
       return (
-        <div className="bg-[#ECFDF1] border border-[#ABEFC6] rounded-xl flex items-center py-3 px-6 text-[#28AD75] justify-start gap-x-4 w-full">
-          <Image src="/correct-icon.svg" width={40} height={40} alt="correct" />
-          <span className="font-semibold text-2xl">Correct!</span>
+        <div className="bg-[#ECFDF1] border border-[#ABEFC6] rounded-xl flex items-center py-3 px-6 text-[#28AD75] justify-start gap-x-2 md:gap-x-4 w-full">
+          <Image src="/correct-icon.svg" width={40} height={40} alt="correct" className="size-6 md:size-10" />
+          <span className="font-semibold text-lg md:text-2xl">Correct!</span>
         </div>
       );
     } else {
       return (
-        <div className="bg-[#FF62581F] border border-[#FF6258] rounded-xl flex items-center py-3 px-6 text-[#FF6258] justify-start gap-x-4 w-full">
-          <CircleX className="size-10 text-white fill-[#FF6258]" />
-          <span className="font-semibold text-2xl">Wrong!</span>
+        <div className="bg-[#FF62581F] border border-[#FF6258] rounded-xl flex items-center py-3 px-6 text-[#FF6258] justify-start gap-x-2 md:gap-x-4 w-full">
+          <CircleX className="size-6 md:size-10 text-white fill-[#FF6258]" />
+          <span className="font-semibold text-lg md:text-2xl">Wrong!</span>
         </div>
       );
     }
@@ -97,11 +97,11 @@ export function Quiz({ quizId }: { quizId: string }) {
   const activeQuestion = quiz.questions[currentQuestion];
 
   return (
-    <div className="min-h-svh flex flex-col w-full items-start md:p-8 justify-between gap-y-4">
+    <div className="min-h-svh flex flex-col text-sm md:text-base w-full items-start p-4 md:p-8 justify-between gap-y-4">
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center justify-start text-[#6E6B7B] gap-x-2">
           <Button onClick={handleBack} variant="ghost" className="" size="icon">
-            <ChevronLeft className="size-7" />
+            <ChevronLeft className="size-5 md:size-7" />
           </Button>
           <div className="flex items-center gap-x-2">
             <Image
@@ -112,12 +112,12 @@ export function Quiz({ quizId }: { quizId: string }) {
               className="size-6"
             />
 
-            <span className="font-semibold text-2xl">Lorem Ipsum</span>
+            <span className="font-semibold text-lg md:text-2xl">Lorem Ipsum</span>
           </div>
         </div>
 
         <Button
-          className="bg-[#15112B] rounded-xl text-white cursor-pointer h-11 hover:bg-[#15112B]/90"
+          className="bg-[#15112B] rounded-xl text-white cursor-pointer md:h-11 hover:bg-[#15112B]/90"
           onClick={() => {}}
           size="default"
         >

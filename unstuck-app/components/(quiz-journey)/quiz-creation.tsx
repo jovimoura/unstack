@@ -42,7 +42,7 @@ export function QuizCreation({
   }
 
   return (
-    <div className="min-h-svh flex flex-col w-full items-center md:p-8 justify-start gap-y-4">
+    <div className="min-h-svh flex flex-col w-full items-center p-4 md:p-8 justify-start gap-y-4">
       <div className="flex w-full items-center justify-start">
         <Button
           onClick={handleBack}
@@ -61,7 +61,7 @@ export function QuizCreation({
             width={40}
             height={40}
             alt="logo"
-            className="size-8 md:size-10"
+            className="size-5 md:size-10"
           />
           <h1 className={cn("text-xl md:text-3xl font-medium ml-3.5")}>
             Review & Edit Questions
@@ -77,7 +77,7 @@ export function QuizCreation({
 
             <div className="border-input bg-[#98989814] p-5 rounded-xl w-full">
               <input
-                className="w-full font-medium bg-transparent outline-none"
+                className="w-full text-xs md:text-base font-medium bg-transparent outline-none"
                 value={q.question}
                 onChange={(e) => updateQuestionText(i, e.target.value)}
                 onFocus={() => setFocusedInput({ question: i })}
@@ -92,7 +92,7 @@ export function QuizCreation({
             <div className="space-y-2 w-full">
               {q.options.map((opt, j) => (
                 <div key={j} className="flex items-center justify-start gap-2">
-                  <span className="text-sm font-medium min-w-16">
+                  <span className="text-xs md:text-sm font-medium min-w-16">
                     Option {j + 1}:
                   </span>
 
@@ -107,16 +107,16 @@ export function QuizCreation({
                     <input
                       type="text"
                       value={opt}
-                      className="w-full bg-transparent outline-none"
+                      className="w-full bg-transparent outline-none text-xs md:text-base"
                       onChange={(e) => updateOptionText(i, j, e.target.value)}
                       onFocus={() => setFocusedInput({ option: `${i}-${j}` })}
                       onBlur={() => setFocusedInput({})}
                     />
 
                     {q.answer_index === j && (
-                      <div className="absolute right-4 top-4 bg-[#ECFDF1] border border-[#ABEFC6] rounded-xl flex items-center p-2 text-[#28AD75]">
+                      <div className="absolute right-2.5 md:right-4 top-2.5 md:top-4 bg-[#ECFDF1] border border-[#ABEFC6] rounded-xl flex items-center p-1 md:p-2 text-[#28AD75]">
                         <Check className="size-4" />
-                        <span className="text-xs font-medium">
+                        <span className="text-[10px] md:text-xs font-medium">
                           Correct Answer
                         </span>
                       </div>
