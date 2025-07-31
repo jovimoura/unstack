@@ -54,7 +54,7 @@ export function FileUploadInput() {
       
       const data = await res.json();
       console.log('JSON QUIZ', data);
-      return data.questions;
+      return {questions: data.questions, quizId: data.quizId};
     },
     onSuccess: (questions) => {
       setQuiz(questions);

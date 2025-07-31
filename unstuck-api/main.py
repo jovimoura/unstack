@@ -29,4 +29,4 @@ async def generate_quiz(file: UploadFile = File(...)):
     if not quiz:
         raise HTTPException(status_code=500, detail="Failed to generate questions with OpenAI.")
     
-    return {"questions": quiz}
+    return {"questions": quiz, "quizId": "random-uuid"}

@@ -8,26 +8,37 @@ import { useQuizStore } from "@/hooks/use-quiz-store";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
+export function QuizCreation({
+  quiz,
+}: {
+  quiz: { quizId: string; questions: QuizQuestion[] };
+}) {
   const router = useRouter();
-  const { quiz: storedQuiz, setQuiz, updateQuestionText, updateOptionText, reset } =
-    useQuizStore();
-    const [focusedInput, setFocusedInput] = useState<{
-      question?: number;
-      option?: string;
-    }>({});
+  const {
+    quiz: storedQuiz,
+    setQuiz,
+    updateQuestionText,
+    updateOptionText,
+    reset,
+  } = useQuizStore();
+  const [focusedInput, setFocusedInput] = useState<{
+    question?: number;
+    option?: string;
+  }>({});
 
-  if (storedQuiz.length === 0) {
+
+  console.log('storedQuiz', storedQuiz);
+  if (storedQuiz.questions.length === 0) {
     setQuiz(quiz);
   }
-  
+
   function handleBack() {
     reset();
     router.refresh();
   }
 
   function handleStartQuiz() {
-    router.push("/quiz");
+    router.push(`/quiz/${quiz.quizId}`);
   }
 
   return (
@@ -57,7 +68,7 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
           </h1>
         </div>
 
-        {storedQuiz.map((q, i) => (
+        {storedQuiz.questions.map((q, i) => (
           <div
             key={i}
             className="w-full p-5 border bg-white border-input flex flex-col gap-y-6 items-start justify-start rounded-xl"
@@ -78,7 +89,7 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
 
             <span className="text-sm font-medium">Multichoice Answers</span>
 
-            <div className="space-y-1 w-full">
+            <div className="space-y-2 w-full">
               {q.options.map((opt, j) => (
                 <div key={j} className="flex items-center justify-start gap-2">
                   <span className="text-sm font-medium min-w-16">
@@ -97,12 +108,8 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
                       type="text"
                       value={opt}
                       className="w-full bg-transparent outline-none"
-                      onChange={(e) =>
-                        updateOptionText(i, j, e.target.value)
-                      }
-                      onFocus={() =>
-                        setFocusedInput({ option: `${i}-${j}` })
-                      }
+                      onChange={(e) => updateOptionText(i, j, e.target.value)}
+                      onFocus={() => setFocusedInput({ option: `${i}-${j}` })}
                       onBlur={() => setFocusedInput({})}
                     />
 
@@ -121,7 +128,12 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
           </div>
         ))}
 
-        <Button onClick={handleStartQuiz} className="font-semibold w-[150px] h-11 rounded-2xl self-center cursor-pointer">Start Quiz</Button>
+        <Button
+          onClick={handleStartQuiz}
+          className="font-semibold w-[150px] h-11 rounded-2xl self-center cursor-pointer"
+        >
+          Start Quiz
+        </Button>
       </div>
     </div>
   );
