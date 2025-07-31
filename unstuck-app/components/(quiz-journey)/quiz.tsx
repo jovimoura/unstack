@@ -10,24 +10,51 @@ import { Separator } from "../ui/separator";
 import { useQuizStore } from "@/hooks/use-quiz-store";
 import { useEffect, useState } from "react";
 import { CheckBox } from "../checkbox";
+import { useRouter } from "next/navigation";
 
 export function Quiz({ quizId }: { quizId: string }) {
-  const { quiz, reset } = useQuizStore();
+  const router = useRouter();
+  const { quiz, reset, chooseAnswer } = useQuizStore();
   console.log("storedQuiz", quiz);
   const [loadingQuiz, setLoadingQuiz] = useState(true);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [choosedOption, setChoosedOption] = useState<null | number>(null);
+  const [answers, setAnswers] = useState<(number | null)[]>(() =>
+    Array(quiz.questions.length).fill(null)
+  );
 
   function handleBack() {}
 
-  function handlePrevious() {}
+  function handlePrevious() {
+    if (currentQuestion > 0) {
+      setCurrentQuestion(currentQuestion - 1);
+    }
+  }
 
-  function handleNext() {}
+  function handleNext() {
+    if (currentQuestion < quiz.questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setChoosedOption(null);
+    }
+  }
+
+  function handleFinishQuiz() {
+    router.push(`/quiz/${quizId}/results`);
+  }
+
+  function handleOptionClick(index: number) {
+    const updated = [...answers];
+    updated[currentQuestion] = index;
+    setAnswers(updated);
+    setChoosedOption(index);
+    chooseAnswer(currentQuestion, index);
+  }
 
   function renderResult() {
-    if (choosedOption === null) {
+    const selected = answers[currentQuestion];
+    if (selected === null) {
       return null;
-    } else if (choosedOption === activeQuestion.answer_index) {
+    } else if (selected === activeQuestion.answer_index) {
       return (
         <div className="bg-[#ECFDF1] border border-[#ABEFC6] rounded-xl flex items-center py-3 px-6 text-[#28AD75] justify-start gap-x-4 w-full">
           <Image src="/correct-icon.svg" width={40} height={40} alt="correct" />
@@ -102,7 +129,7 @@ export function Quiz({ quizId }: { quizId: string }) {
             {activeQuestion.options.map((opt, j) => (
               <div key={j} className="flex items-center justify-start gap-2">
                 <div
-                  onClick={() => setChoosedOption(j)}
+                  onClick={() => handleOptionClick(j)}
                   className={cn(
                     "rounded-xl p-4 gap-x-2 w-full flex items-center justify-start relative transition-colors",
                     choosedOption === j
@@ -124,14 +151,30 @@ export function Quiz({ quizId }: { quizId: string }) {
       </div>
       <div className="w-full max-w-[700px] self-center flex items-center justify-between">
         <Button
+          disabled={currentQuestion === 0}
+          onClick={handlePrevious}
           variant="outline"
           className="font-semibold px-5 border-[#6D56FA40] text-primary h-11 rounded-2xl self-center cursor-pointer"
         >
           <ChevronLeft className="size-4" /> Previous
         </Button>
-        <Button className="font-semibold px-5 h-11 rounded-2xl self-center cursor-pointer">
-          Next <ChevronRight className="size-4" />
-        </Button>
+        {currentQuestion === quiz.questions.length - 1 ? (
+          <Button
+            disabled={answers[currentQuestion] === null}
+            onClick={handleFinishQuiz}
+            className="font-semibold px-5 h-11 rounded-2xl self-center cursor-pointer"
+          >
+            Finish
+          </Button>
+        ) : (
+          <Button
+            disabled={answers[currentQuestion] === null}
+            onClick={handleNext}
+            className="font-semibold px-5 h-11 rounded-2xl self-center cursor-pointer"
+          >
+            Next <ChevronRight className="size-4" />
+          </Button>
+        )}
       </div>
     </div>
   );
