@@ -11,9 +11,12 @@ import { useFileUpload } from "@/hooks/use-file-upload";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuizStore } from "@/hooks/use-quiz-store";
+import { QuizLoading } from "./(quiz-journey)/quiz-loading";
 
 export function FileUploadInput() {
   const maxSize = 10 * 1024 * 1024; // 10MB default
+  const setQuiz = useQuizStore((state) => state.setQuiz);
 
   const [
     { files, isDragging, errors },
@@ -53,13 +56,25 @@ export function FileUploadInput() {
       console.log('JSON QUIZ', data);
       return data.questions;
     },
-    onSuccess: () => {
+    onSuccess: (questions) => {
+      setQuiz(questions);
       queryClient.invalidateQueries({ queryKey: ["pdf"] });
     },
     onError: (error) => {
       console.error("Send pdf error", error);
     },
   });
+
+  if (isLoading) {
+    return (
+      <div className="flex-1 flex items-center justify-center min-h-svh">
+        <QuizLoading
+          title="Generating Quiz Questions"
+          description="Reading your materials..."
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col gap-2 p-5 bg-white rounded-3xl w-full max-w-[700px] h-[400px]">
