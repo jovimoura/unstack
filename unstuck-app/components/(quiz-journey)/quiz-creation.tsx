@@ -1,19 +1,34 @@
 import { QuizQuestion } from "@/contracts/quiz";
 import { Button } from "../ui/button";
-import { ChevronLeft } from "lucide-react";
+import { Check, ChevronLeft } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
+import { useQuizStore } from "@/hooks/use-quiz-store";
+import { useState } from "react";
 
 export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
-  function handleBack() {
+  const { quiz: storedQuiz, setQuiz, updateQuestionText, updateOptionText } =
+    useQuizStore();
+    const [focusedInput, setFocusedInput] = useState<{
+      question?: number;
+      option?: string;
+    }>({});
 
+  if (storedQuiz.length === 0) {
+    setQuiz(quiz);
   }
+  
+  function handleBack() {}
 
   return (
     <div className="min-h-svh flex flex-col w-full items-center md:p-8 justify-start gap-y-4">
       <div className="flex w-full items-center justify-start">
-        <Button onClick={handleBack} variant="ghost" className="text-sm font-semibold text-primary">
+        <Button
+          onClick={handleBack}
+          variant="ghost"
+          className="text-sm font-semibold text-primary"
+        >
           <ChevronLeft className="size-4" />
           Back
         </Button>
@@ -33,27 +48,49 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
           </h1>
         </div>
 
-        {quiz.map((q, i) => <div key={i} className="w-full p-5 border bg-white border-input flex flex-col gap-y-6 items-start justify-start rounded-xl">
-          <span className="text-sm font-medium">Question {i + 1}</span>
+        {quiz.map((q, i) => (
+          <div
+            key={i}
+            className="w-full p-5 border bg-white border-input flex flex-col gap-y-6 items-start justify-start rounded-xl"
+          >
+            <span className="text-sm font-medium">Question {i + 1}</span>
 
-          <div className="border-input bg-[#98989814] p-5 rounded-xl w-full">
-            <span className="font-medium">{q.question}</span>
+            <div className="border-input bg-[#98989814] p-5 rounded-xl w-full">
+              <span className="font-medium">{q.question}</span>
+            </div>
+
+            <Separator />
+
+            <span className="text-sm font-medium">Multichoice Answers</span>
+
+            <div className="space-y-1 w-full">
+              {q.options.map((opt, j) => (
+                <div key={j} className="flex items-center justify-start gap-2">
+                  <span className="text-sm font-medium min-w-16">
+                    Option {j + 1}:
+                  </span>
+
+                  <div className="bg-[#F8F8F9] rounded-xl p-4 w-full flex items-center justify-start relative">
+                    <input
+                      type="text"
+                      value={opt}
+                      className="ring-offset-0  placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:transparent focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
+                    />
+
+                    {q.answer_index === j && (
+                      <div className="absolute right-4 top-4 bg-[#ECFDF1] border border-[#ABEFC6] rounded-xl flex items-center p-2 text-[#28AD75]">
+                        <Check className="size-4" />
+                        <span className="text-xs font-medium">
+                          Correct Answer
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-
-          <Separator />
-
-          <span className="text-sm font-medium">Multichoice Answers</span>
-
-          <div className="space-y-1 w-full">
-            {q.options.map((opt, j) => <div key={j} className="flex items-center justify-start gap-2">
-              <span className="text-sm font-medium min-w-16">Option {j + 1}:</span>
-
-              <div className="bg-[#F8F8F9] rounded-xl p-4 w-full flex items-center justify-start">
-                <span>{opt}</span>
-              </div>
-            </div>)}
-          </div>
-        </div>)}
+        ))}
       </div>
     </div>
   );

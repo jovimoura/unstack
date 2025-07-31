@@ -1,24 +1,31 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { QuizQuestion } from "@/contracts/quiz";
 
-export type QuizQuestion = {
-  question: string;
-  options: string[];
-  answer_index: number;
-};
+interface QuizState {
+  quiz: QuizQuestion[];
+  setQuiz: (quiz: QuizQuestion[]) => void;
+  updateQuestionText: (index: number, newText: string) => void;
+  updateOptionText: (qIndex: number, oIndex: number, newText: string) => void;
+}
 
-type QuizStore = {
-  quiz: QuizQuestion[] | null;
-  setQuiz: (data: QuizQuestion[]) => void;
-  resetQuiz: () => void;
-};
-
-export const useQuizStore = create<QuizStore>()(
+export const useQuizStore = create<QuizState>()(
   persist(
     (set) => ({
-      quiz: null,
-      setQuiz: (data) => set({ quiz: data }),
-      resetQuiz: () => set({ quiz: null }),
+      quiz: [],
+      setQuiz: (quiz) => set({ quiz }),
+      updateQuestionText: (index, newText) =>
+        set((state) => {
+          const updated = [...state.quiz];
+          updated[index].question = newText;
+          return { quiz: updated };
+        }),
+      updateOptionText: (qIndex, oIndex, newText) =>
+        set((state) => {
+          const updated = [...state.quiz];
+          updated[qIndex].options[oIndex] = newText;
+          return { quiz: updated };
+        }),
     }),
     {
       name: "quiz-storage",
