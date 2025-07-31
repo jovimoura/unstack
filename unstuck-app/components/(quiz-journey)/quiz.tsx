@@ -1,9 +1,8 @@
 "use client";
 
 import { QuizLoading } from "./quiz-loading";
-import { QuizQuestion } from "@/contracts/quiz";
 import { Button } from "../ui/button";
-import { Check, ChevronLeft, ChevronRight, CircleX } from "lucide-react";
+import { ChevronLeft, ChevronRight, CircleX, Zap } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
@@ -14,8 +13,7 @@ import { useRouter } from "next/navigation";
 
 export function Quiz({ quizId }: { quizId: string }) {
   const router = useRouter();
-  const { quiz, reset, chooseAnswer } = useQuizStore();
-  console.log("storedQuiz", quiz);
+  const { quiz, chooseAnswer } = useQuizStore();
   const [loadingQuiz, setLoadingQuiz] = useState(true);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [choosedOption, setChoosedOption] = useState<null | number>(null);
@@ -23,7 +21,9 @@ export function Quiz({ quizId }: { quizId: string }) {
     Array(quiz.questions.length).fill(null)
   );
 
-  function handleBack() {}
+  function handleBack() {
+    router.push("/");
+  }
 
   function handlePrevious() {
     if (currentQuestion > 0) {
@@ -94,21 +94,32 @@ export function Quiz({ quizId }: { quizId: string }) {
 
   return (
     <div className="min-h-svh flex flex-col w-full items-start md:p-8 justify-between gap-y-4">
-      <div className="flex items-center justify-start text-[#6E6B7B] gap-x-2">
-        <Button onClick={handleBack} variant="ghost" className="" size="icon">
-          <ChevronLeft className="size-7" />
-        </Button>
-        <div className="flex items-center gap-x-2">
-          <Image
-            src="/file-pdf-icon.svg"
-            alt="file"
-            width={24}
-            height={24}
-            className="size-6"
-          />
+      <div className="w-full flex items-center justify-between">
+        <div className="flex items-center justify-start text-[#6E6B7B] gap-x-2">
+          <Button onClick={handleBack} variant="ghost" className="" size="icon">
+            <ChevronLeft className="size-7" />
+          </Button>
+          <div className="flex items-center gap-x-2">
+            <Image
+              src="/file-pdf-icon.svg"
+              alt="file"
+              width={24}
+              height={24}
+              className="size-6"
+            />
 
-          <span className="font-semibold text-2xl">Lorem Ipsum</span>
+            <span className="font-semibold text-2xl">Lorem Ipsum</span>
+          </div>
         </div>
+
+        <Button
+          className="bg-[#15112B] rounded-xl text-white cursor-pointer h-11 hover:bg-[#15112B]/90"
+          onClick={() => {}}
+          size="default"
+        >
+          <Zap className="size-4 fill-white" />
+          Upgrade
+        </Button>
       </div>
 
       <div className="flex flex-col self-center space-y-6 w-full items-center justify-between max-w-[700px]">

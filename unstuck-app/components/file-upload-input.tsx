@@ -17,6 +17,7 @@ import { QuizLoading } from "./(quiz-journey)/quiz-loading";
 export function FileUploadInput() {
   const maxSize = 10 * 1024 * 1024; // 10MB default
   const setQuiz = useQuizStore((state) => state.setQuiz);
+  const setCreatingQuiz = useQuizStore((state) => state.setCreatingQuiz);
 
   const [
     { files, isDragging, errors },
@@ -45,6 +46,7 @@ export function FileUploadInput() {
         throw new Error("Invalid file type");
       }
       formData.append("file", file.file);
+      setCreatingQuiz(true);
       const res = await fetch("http://localhost:8000/generate-quiz/", {
         method: "POST",
         body: formData,
@@ -53,14 +55,16 @@ export function FileUploadInput() {
       if (!res.ok) throw new Error("Failed to generate quiz");
       
       const data = await res.json();
-      console.log('JSON QUIZ', data);
+      // console.log('JSON QUIZ', data);
       return {questions: data.questions, quizId: data.quizId};
     },
     onSuccess: (questions) => {
       setQuiz(questions);
+      setCreatingQuiz(false);
       queryClient.invalidateQueries({ queryKey: ["pdf"] });
     },
     onError: (error) => {
+      setCreatingQuiz(false);
       console.error("Send pdf error", error);
     },
   });

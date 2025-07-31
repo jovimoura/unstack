@@ -27,7 +27,7 @@ export function QuizCreation({
   }>({});
 
 
-  console.log('storedQuiz', storedQuiz);
+  // console.log('storedQuiz', storedQuiz);
   if (storedQuiz.questions.length === 0) {
     setQuiz(quiz);
   }

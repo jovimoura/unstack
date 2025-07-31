@@ -3,6 +3,8 @@ import { persist } from "zustand/middleware";
 import type { QuizQuestion } from "@/contracts/quiz";
 
 interface QuizState {
+  creatingQuiz: boolean;
+  setCreatingQuiz: (creating: boolean) => void;
   quiz: { quizId: string; questions: QuizQuestion[] };
   setQuiz: (quiz: { quizId: string; questions: QuizQuestion[] }) => void;
   updateQuestionText: (index: number, newText: string) => void;
@@ -15,6 +17,8 @@ interface QuizState {
 export const useQuizStore = create<QuizState>()(
   persist(
     (set) => ({
+      creatingQuiz: false,
+      setCreatingQuiz: (creating) => set({ creatingQuiz: creating }),
       quiz: { quizId: "", questions: [] },
       answers: [],
       setQuiz: (quiz) => set({ quiz, answers: [] }),
