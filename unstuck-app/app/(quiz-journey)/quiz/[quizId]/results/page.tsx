@@ -49,7 +49,7 @@ export default function Results() {
     <div className="min-h-svh flex flex-col w-full items-start md:p-8 justify-start gap-y-6">
       <div className="w-full flex items-center justify-between">
         <div className="flex items-center justify-start text-[#6E6B7B] gap-x-2">
-          <Button onClick={handleBack} variant="ghost" className="" size="icon">
+          <Button onClick={handleBack} variant="ghost" className="cursor-pointer" size="icon">
             <ChevronLeft className="size-7" />
           </Button>
           <div className="flex items-center gap-x-2">
