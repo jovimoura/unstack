@@ -6,9 +6,11 @@ import { cn } from "@/lib/utils";
 import { Separator } from "../ui/separator";
 import { useQuizStore } from "@/hooks/use-quiz-store";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
-  const { quiz: storedQuiz, setQuiz, updateQuestionText, updateOptionText } =
+  const router = useRouter();
+  const { quiz: storedQuiz, setQuiz, updateQuestionText, updateOptionText, reset } =
     useQuizStore();
     const [focusedInput, setFocusedInput] = useState<{
       question?: number;
@@ -19,7 +21,14 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
     setQuiz(quiz);
   }
   
-  function handleBack() {}
+  function handleBack() {
+    reset();
+    router.refresh();
+  }
+
+  function handleStartQuiz() {
+    router.push("/quiz");
+  }
 
   return (
     <div className="min-h-svh flex flex-col w-full items-center md:p-8 justify-start gap-y-4">
@@ -111,6 +120,8 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
             </div>
           </div>
         ))}
+
+        <Button onClick={handleStartQuiz} className="font-semibold w-[150px] h-11 rounded-2xl self-center cursor-pointer">Start Quiz</Button>
       </div>
     </div>
   );

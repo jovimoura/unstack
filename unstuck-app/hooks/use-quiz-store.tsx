@@ -7,6 +7,7 @@ interface QuizState {
   setQuiz: (quiz: QuizQuestion[]) => void;
   updateQuestionText: (index: number, newText: string) => void;
   updateOptionText: (qIndex: number, oIndex: number, newText: string) => void;
+  reset: () => void;
 }
 
 export const useQuizStore = create<QuizState>()(
@@ -26,6 +27,7 @@ export const useQuizStore = create<QuizState>()(
           updated[qIndex].options[oIndex] = newText;
           return { quiz: updated };
         }),
+      reset: () => set({ quiz: [] }),
     }),
     {
       name: "quiz-storage",
