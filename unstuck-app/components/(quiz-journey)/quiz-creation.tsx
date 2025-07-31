@@ -34,8 +34,8 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
         </Button>
       </div>
 
-      <div className="flex flex-col space-y-6 w-full items-center justify-center max-w-[700px]">
-        <div className="flex items-center mb-2">
+      <div className="flex flex-col space-y-6 w-full items-start justify-center max-w-[700px]">
+        <div className="flex items-center mb-8">
           <Image
             src="/logo.svg"
             width={40}
@@ -48,7 +48,7 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
           </h1>
         </div>
 
-        {quiz.map((q, i) => (
+        {storedQuiz.map((q, i) => (
           <div
             key={i}
             className="w-full p-5 border bg-white border-input flex flex-col gap-y-6 items-start justify-start rounded-xl"
@@ -56,7 +56,13 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
             <span className="text-sm font-medium">Question {i + 1}</span>
 
             <div className="border-input bg-[#98989814] p-5 rounded-xl w-full">
-              <span className="font-medium">{q.question}</span>
+              <input
+                className="w-full font-medium bg-transparent outline-none"
+                value={q.question}
+                onChange={(e) => updateQuestionText(i, e.target.value)}
+                onFocus={() => setFocusedInput({ question: i })}
+                onBlur={() => setFocusedInput({})}
+              />
             </div>
 
             <Separator />
@@ -70,11 +76,25 @@ export function QuizCreation({ quiz }: { quiz: QuizQuestion[] }) {
                     Option {j + 1}:
                   </span>
 
-                  <div className="bg-[#F8F8F9] rounded-xl p-4 w-full flex items-center justify-start relative">
+                  <div
+                    className={cn(
+                      "rounded-xl p-4 w-full flex items-center justify-start relative transition-colors",
+                      focusedInput.option === `${i}-${j}`
+                        ? "bg-[#6D56FA14] border border-[#6D56FA33]"
+                        : "bg-[#F8F8F9]"
+                    )}
+                  >
                     <input
                       type="text"
                       value={opt}
-                      className="ring-offset-0  placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 focus-visible:transparent focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
+                      className="w-full bg-transparent outline-none"
+                      onChange={(e) =>
+                        updateOptionText(i, j, e.target.value)
+                      }
+                      onFocus={() =>
+                        setFocusedInput({ option: `${i}-${j}` })
+                      }
+                      onBlur={() => setFocusedInput({})}
                     />
 
                     {q.answer_index === j && (
