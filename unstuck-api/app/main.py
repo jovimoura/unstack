@@ -13,6 +13,10 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def root():
+    return {"message": "API online"}
+
 @app.post("/generate-quiz/")
 async def generate_quiz(file: UploadFile = File(...)):
     if not file.filename.endswith(".pdf"):

@@ -47,7 +47,7 @@ export function FileUploadInput() {
       }
       formData.append("file", file.file);
       setCreatingQuiz(true);
-      const res = await fetch("http://localhost:8000/generate-quiz/", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/generate-quiz/`, {
         method: "POST",
         body: formData,
       });
