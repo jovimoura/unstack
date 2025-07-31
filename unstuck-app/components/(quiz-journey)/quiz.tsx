@@ -79,6 +79,10 @@ export function Quiz({ quizId }: { quizId: string }) {
     return () => clearTimeout(timeout);
   }, []);
 
+  useEffect(() => {
+    setChoosedOption(answers[currentQuestion]);
+  }, [currentQuestion, answers]);
+
   if (loadingQuiz) {
     return (
       <div className="flex-1 flex items-center justify-center min-h-svh">
